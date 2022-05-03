@@ -233,23 +233,26 @@ def construction_cascade(f,d,F_target,P,N,test_visage,test_non_visage) :
 
 
 if __name__ == "__main__" :
-    #Tests unitaires
-    #l = list(range(1,43,6))
-    #print (combinliste(l,3))
-    #print (ensemble_possibilites_somme(l))
+    
+    # Tests des fonctions combinliste, ensemble_possibilites_somme et truncate
+    # Pour l'implémentation de combinliste, nous nous sommes basés sur la fonction implémentée à cette adresse :
+    # https://python.jpvweb.com/python/mesrecettespython/doku.php?id=combinaisons
+    l = list(range(1,43,6))
+    print (combinliste(l,3))
+    print (ensemble_possibilites_somme(l))
 
-    #print(truncate(42.123,1))
+    print(truncate(42.123,1))
 
-    #Construction de la cascade
-    f = 0.4 # le taux de faux positifs maximal par couche de la cascade # 0.4
-    d = 0.95 # le taux de détection minimal par couche de la cascade # 0.95
-    F_target = 0.0015 # le taux de faux positifs maximal pour la cascade en entier # 0.0015
+    # Construction de la cascade
+    f = # le taux de faux positifs maximal par couche de la cascade, à compléter
+    d = # le taux de détection minimal par couche de la cascade, à compléter
+    F_target = # le taux de faux positifs maximal pour la cascade en entier, à compléter
 
-    P = np.load("entrainement-visage.npy") # la base de données d'entraînement de non-visages
-    N = np.load("entrainement-non-visage.npy") # la base de données d'entraînement de non-visages
+    P = np.load("chemin") # la base de données d'entraînement de non-visages, chemin à compléter
+    N = np.load("chemin") # la base de données d'entraînement de non-visages, chemin à compléter
 
-    test_visage = np.load("test-visage.npy") # la base de données de test de visages
-    test_non_visage = np.load("test-non-visage.npy") # la base de données de test de non-visages
+    test_visage = np.load("chemin") # la base de données de test de visages, chemin à compléter
+    test_non_visage = np.load("chemin") # la base de données de test de non-visages, chemin à compléter
 
     fonction_cascade = construction_cascade(f,d,F_target,P,N,test_visage,test_non_visage)
     print(fonction_cascade)
