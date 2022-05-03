@@ -1,5 +1,4 @@
 import numpy as np
-
 import matplotlib.pyplot as plt
 import matplotlib.image as img
 
@@ -112,24 +111,6 @@ def aire (tableau,i0,j0,largeur,hauteur) :
                tableau [j0-1,i0+largeur-1] - tableau [j0+hauteur-1,i0-1],True) # D+A-B-C
 
 
-def intersection_boites (x1,y1,l1,x2,y2,l2) :
-    '''Entrée : x1 (respectivement x2) : int -> indice de la ligne du coin en haut à gauche du carré 1 (respectivement 2)
-                y1 (respectivement y2) : int -> indice de la colonne du coin en bas à gauche du carré 1 (respectivement 2)
-                l1 (respectivement l2) : int -> longueur du carré 1 (respectivement 2)
-    
-    Sortie : bool -> True si l'intersection des deux carrés n'est pas nulle
-    
-    Cette fonction va être utile dans le futur tracé d'un carré étant censé contenir un visage, dans le cas où plusieurs
-    de ces carrés sont censés en contenir'''
-
-    x1 -= l1 // 2
-    y1 += h1 // 2
-    x2 -= l2 // 2
-    y2 += h2 // 2
-
-    return abs(x1 - x2) * 2 < l1 + l2 and abs(y1 - y2) * 2 < l1 + l2
-
-
 def boites_a_tracer (image,liste_boites) :
     '''Entrée : image : numpy array (2) -> l'image sur laquelle on va dessiner les carrés
                 liste_boites : tuple list -> liste de triplet avec les coordonnées du coin 
@@ -153,17 +134,16 @@ def boites_a_tracer (image,liste_boites) :
 
 
 if __name__ == "__main__" :
-    #tests unitaires
-    joconde = import_image("D:/travail-lycee/MP/tipe/base_de_donnees_visage/joconde.jpg")
-    affiche (joconde,False)
-    joconde_nb = noir_et_blanc(joconde)
-    affiche(joconde_nb)
+    image = import_image("chemin") # chemin à compléter
+    affiche (image,False)
+    image_nb = noir_et_blanc(image)
+    affiche(image)
 
-    carres = subdivision (joconde_nb,300,100)
+    carres = subdivision (image_nb,300,100)
     for carre,_,_ in carres[:5] : affiche(carre)
 
-    liste_boites = [(260,170,260),(10,570,180)]
-    boites_a_tracer (joconde_nb,liste_boites)
+    liste_boites = []
+    boites_a_tracer (image_nb,liste_boites)
 
     t = np.arange(1,577).reshape((24,24))
     t_int = image_integrale(t)
