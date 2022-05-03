@@ -342,16 +342,23 @@ def adaboost (bdd_visage,bdd_non_visage,T,linspace,K = 500,verbeux = True,charge
 
 
 if __name__ == "__main__" :
-    #Tests unitaires
-
-    bdd_visage = np.load("entrainement-visage.npy") # la base de données de visage pour l'apprentissage
-    bdd_non_visage = np.load("entrainement-non-visage.npy") # la base de données de non-visages pour l'apprentissage
+    
+    # Test de la fonction dichotomie
+    
+    t = np.arange(0,100)
+    print(dichotomie(t,54.3),t[dichotomie(t,54.3)])
+    
+    
+    
+    # Création d'un détecteur monolithique
+    
+    bdd_visage = np.load("chemin") # la base de données de visage pour l'apprentissage, chemin à compléter
+    bdd_non_visage = np.load("chemin") # la base de données de non-visages pour l'apprentissage, chemin à compléter
 
     T = 200 # nombre de classifieurs faibles dans la fonction de détection
     linspace = False # la méthode de recherche du seuil
 
     f = adaboost (bdd_visage,bdd_non_visage,T,linspace,chargement=False)
     print(f)
-
-    t = np.arange(0,100)
-    print(dichotomie(t,54.3),t[dichotomie(t,54.3)])
+    
+    np.save("fonction_detection.npy",f)
