@@ -9,12 +9,12 @@ pas = 2 # pas entre chaque sous-rectangles dans les carrés balayés
 increment = 1.2 # ce par quoi on multiplie itérativement la taille des sous-rectangles
 features = retrouver_features(taille,pas,increment) # toutes les features avec ces paramètres
 
-#f = np.load("fonction_detection-5.npy") # la fonction de détection
-# on ne s'intéresse ici qu'au numéro des features de la focntion de détection
-#f = np.array(f[:,0],dtype=np.int32)
-f = [13302]
+f = np.load("fonction_detection.npy") # la fonction de détection monolithique
 
-image = np.load("test-visage.npy")[777]
+# on ne s'intéresse ici qu'au numéro des features de la focntion de détection
+f = np.array(f[:,0],dtype=np.int32)
+
+image = np.load("chemin") # une image 24*24 en fond sur laquelle on veut afficher les features obtenues par Adaboost
 
 for numero in f :
 
