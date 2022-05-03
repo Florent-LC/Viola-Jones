@@ -210,19 +210,20 @@ def eval_feature(bdd, pas=2, increment=1.2, verbeux=False):
 
 if __name__ == "__main__" :
 
-    bdd_visage = np.load("entrainement-visage.npy") # la base de données d'entraînement de non-visages
-    bdd_non_visage = np.load("entrainement-non-visage.npy") # la base de données d'entraînement de non-visages
-
-    features_positifs = eval_feature (bdd_visage)
-    features_negatifs = eval_feature (bdd_non_visage)
-
-    #np.savetxt("eval_feature_visage",features_positifs)
-    #np.savetxt("eval_feature_non_visage",features_negatifs)
-
-    #Tests unitaires
+    #Tests unitaires : on peut vérifier à la main (c'est long) que les valeurs retournées sont correctes
     t = np.arange(1,26).reshape((5,5))
     print (feature1(t,3,1.5),"\n")
     print (feature2(t,3,1.5),"\n")
     print (feature3(t,3,1.5),"\n")
     print (feature4(t,3,1.5),"\n")
-    # on peut vérifier à la main (c'est long) que les valeurs retournées sont correctes
+    
+    
+    # Évaluation des bases de données
+    bdd_visage = np.load("chemin") # la base de données d'entraînement de non-visages, chemin à compléter
+    bdd_non_visage = np.load("chemin") # la base de données d'entraînement de non-visages, chemin à compléter
+
+    features_positifs = eval_feature (bdd_visage)
+    features_negatifs = eval_feature (bdd_non_visage)
+
+    np.savetxt("eval_feature_visage",features_positifs)
+    np.savetxt("eval_feature_non_visage",features_negatifs)
