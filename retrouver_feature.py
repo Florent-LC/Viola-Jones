@@ -148,5 +148,6 @@ if __name__ == "__main__" :
     print(retrouver_feature3(taille,pas,increment),"\n")
     print(retrouver_feature4(taille,pas,increment),"\n")
 
+    # nombre de features sélectionnées
     taille = 24
     print(len(retrouver_features(taille,pas,increment)))
