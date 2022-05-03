@@ -160,7 +160,9 @@ def reconnaitre_visages (image,coef_pas,coef_taille,taille_min,pas_min,f,feature
 
 
 if __name__ == "__main__" :
-    fonction_cascade =  np.load("fonction_detection-5-2.npy")
+    
+    # Reconnaissance de visage avec une cascade
+    fonction_cascade =  np.load("cascade.npy")
     n = len(fonction_cascade)
     f = [fonction_cascade[i][0] for i in range(n)] # la fonction de détection
     conditions = [fonction_cascade[i][1] for i in range(n)] # les conditions pour chaque classifieur fort
@@ -170,7 +172,7 @@ if __name__ == "__main__" :
     pas_min = 2 # le pas minimal lors du balayage des carrés
     coef_pas = 1 # ce par quoi on augmente le pas lorsqu'on augmente la taille des carrés balayés
 
-    image = import_image ("D:/travail-lycee/MP/tipe/base_de_donnees_visage/joconde-2.jpg") # l'image sur laquelle on veut détecter des visages
+    image = import_image ("chemin") # l'image sur laquelle on veut détecter des visages, chemin à compléter
     image = noir_et_blanc (image)
 
     t1 = time()
