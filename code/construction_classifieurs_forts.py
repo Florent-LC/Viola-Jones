@@ -316,5 +316,6 @@ if __name__ == "__main__" :
     print(fonction_cascade)
     np.save("cascade.npy",fonction_cascade)
     
+    # le seuil trouvé pour la fonction de détection monolithique
     f = np.load("fonction_detection.npy")
     print (seuil_monolithique (test_visage,f,d,features))
