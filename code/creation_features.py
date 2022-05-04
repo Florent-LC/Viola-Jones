@@ -219,11 +219,12 @@ if __name__ == "__main__" :
     
     
     # Évaluation des bases de données
+    # Si les bases de données sont trop grandes, il est déconseillé de les enregistrer dans des fichiers numpy
     bdd_visage = np.load("chemin") # la base de données d'entraînement de non-visages, chemin à compléter
     bdd_non_visage = np.load("chemin") # la base de données d'entraînement de non-visages, chemin à compléter
 
     features_positifs = eval_feature (bdd_visage)
     features_negatifs = eval_feature (bdd_non_visage)
-
+    
     np.savetxt("eval_feature_visage",features_positifs)
     np.savetxt("eval_feature_non_visage",features_negatifs)
