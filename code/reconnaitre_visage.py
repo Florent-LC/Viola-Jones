@@ -133,7 +133,7 @@ def reconnaitre_visages (image,coef_pas,coef_taille,taille_min,pas_min,f,feature
             sous_images = subdivision (image,largeur,int(pas))
             for carre,x,y in sous_images :
                 h = len (carre)
-                carre = np.array(zoom(carre, float(24/h)),dtype=np.uint8)
+                carre = zoom(carre, float(24/h),output=np.uint8)
                 if cascade (carre,f,features,condition) :
                     res.append((x,y,largeur))
             pas += coef_pas
@@ -143,7 +143,7 @@ def reconnaitre_visages (image,coef_pas,coef_taille,taille_min,pas_min,f,feature
             sous_images = subdivision (image,largeur,int(pas))
             for carre,x,y in sous_images :
                 h = len (carre)
-                carre = np.array(zoom(carre, float(24/h)),dtype=np.uint8)
+                carre = zoom(carre, float(24/h),output=np.uint8)
                 if monolithique (carre,f,features,condition) :
                     res.append((x,y,largeur))
             pas += coef_pas
