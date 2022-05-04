@@ -14,7 +14,7 @@ f = np.load("fonction_detection.npy") # la fonction de détection monolithique
 # on ne s'intéresse ici qu'au numéro des features de la focntion de détection
 f = np.array(f[:,0],dtype=np.int32)
 
-image = np.load("chemin") # une image 24*24 en fond sur laquelle on veut afficher les features obtenues par Adaboost
+image = np.load("chemin") # une image 24*24 en fond sur laquelle on veut afficher les features obtenues par Adaboost, à compléter
 
 for numero in f :
 
