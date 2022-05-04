@@ -210,7 +210,7 @@ def eval_feature(bdd, pas=2, increment=1.2, verbeux=False):
 
 if __name__ == "__main__" :
 
-    #Tests unitaires : on peut vérifier à la main (c'est long) que les valeurs retournées sont correctes
+    # On peut vérifier à la main (c'est long) que les valeurs retournées sont correctes
     t = np.arange(1,26).reshape((5,5))
     print (feature1(t,3,1.5),"\n")
     print (feature2(t,3,1.5),"\n")
