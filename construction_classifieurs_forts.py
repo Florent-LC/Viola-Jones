@@ -6,12 +6,6 @@ from reconnaitre_visage import *
 from creation_features import *
 
 
-taille = 24 # taille minimale des carrés balayés (24 x 24 pour la méthode de Viola-Jones)
-pas = 2 # pas entre chaque sous-rectangles dans les carrés balayés
-increment = 1.2 # ce par quoi on multiplie itérativement la taille des sous-rectangles
-features = retrouver_features(taille,pas,increment) # toutes les features avec ces paramètres
-
-
 def combinliste(l,k):
     '''l : liste
     k : int
@@ -232,7 +226,71 @@ def construction_cascade(f,d,F_target,P,N,test_visage,test_non_visage) :
     return fonction_cascade
 
 
+def seuil_monolithique (test_visage,f,taux_detection,features,precision_condition=0.1) :
+    '''Entrée : test_visage : numpy array (3) -> la base de données test d'images de visages : une dimension 
+                    pour le nombre d'images et les deux autres pour les dimensions de chacune des images
+                f : numpy array (2) -> le classifieur fort total (trié par ordre décroissant des poids)
+                taux_detection : float -> le taux de détection visé
+                features : list -> liste des coordonnées des points à soustraire avec les largeurs que l'on associe à un numéro de feature
+                precision_condition : float -> le pas pour la recherche du seuil optimal
+
+
+    Sortie : seuil : float -> le seuil de détection pour savoir si ce groupement de classifieurs faibles considère
+                         une image comme un visage (si supérieur au seuil) ou non
+
+    Pour la recherche du seuil, on a décidé dans cette fonction de ne prendre en considération que le taux de détection souhaité
+    '''
+
+    nombre_images_visages = len (test_visage)
+
+    condition = -precision_condition # un seuil trop faible pour l'heure
+
+    # on crée un tableau contenant la valeur du détecteur pour toutes les images de la base de données
+    detecteur_bdd = np.zeros(nombre_images_visages)
+
+    for i,visage in enumerate(test_visage) :
+
+        poids = 0
+        for numero,polarite,seuil,_,alpha in f :
+            numero = int (numero)
+            if polarite == 1 :
+                if valeur_feature (features[numero],visage) < seuil :
+                    poids += alpha
+            else :
+                if valeur_feature (features[numero],visage) > seuil :
+                    poids += alpha
+
+        detecteur_bdd[i] = poids
+
+    D = 1. # le taux de détection (comme le seuil est négatif initialement, D vaut 1)
+    incorrects = 0 # le nombre de visages mal classifiés, initialement aucun
+
+    # on augmente le seuil pour que le taux de détection du classifieur fort soit supérieur
+    # à taux_detection et que le seuil soit le plus faible possible
+    # tant que D est convenable, on le recalcule avec le nouveau seuil
+    while D > taux_detection :
+        
+        condition += precision_condition
+        print(detecteur_bdd,D,condition)
+        n1 = len(detecteur_bdd)
+        detecteur_bdd = detecteur_bdd[detecteur_bdd > condition] # on ne conserve que les images bien classifiées
+        n2 = len(detecteur_bdd)
+
+        incorrects += n1 - n2 # les nouvelles images mal classifiées
+
+        D = 1 - (incorrects / nombre_images_visages) # le taux de détection avec la condition de la boucle
+
+    return (condition-precision_condition) # de sorte à ce que le taux de détection soit bien convenable
+
+
+
+
 if __name__ == "__main__" :
+    
+    taille = 24 # taille minimale des carrés balayés (24 x 24 pour la méthode de Viola-Jones)
+    pas = 2 # pas entre chaque sous-rectangles dans les carrés balayés
+    increment = 1.2 # ce par quoi on multiplie itérativement la taille des sous-rectangles
+    features = retrouver_features(taille,pas,increment) # toutes les features avec ces paramètres
     
     # Tests des fonctions combinliste, ensemble_possibilites_somme et truncate
     # Pour l'implémentation de combinliste, nous nous sommes basés sur la fonction implémentée à cette adresse :
@@ -257,3 +315,6 @@ if __name__ == "__main__" :
     fonction_cascade = construction_cascade(f,d,F_target,P,N,test_visage,test_non_visage)
     print(fonction_cascade)
     np.save("cascade.npy",fonction_cascade)
+    
+    f = np.load("fonction_detection.npy")
+    print (seuil_monolithique (test_visage,f,d,features))
