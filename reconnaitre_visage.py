@@ -8,12 +8,6 @@ from entrainement_features import *
 from retrouver_feature import *
 
 
-taille = 24 # taille minimale des carrés balayés (24 x 24 pour la méthode de Viola-Jones)
-pas = 2 # pas entre chaque sous-rectangles dans les carrés balayés
-increment = 1.2 # ce par quoi on multiplie itérativement la taille des sous-rectangles
-features = retrouver_features(taille,pas,increment) # toutes les features avec ces paramètres
-
-
 def valeur_feature (feature,t) :
     """Entree : feature : tuple -> coordonnées des points avec les largeurs à soustraire que l'on associe à un numéro de feature
                 t : numpy array (2) -> une image 24x24
@@ -161,24 +155,37 @@ def reconnaitre_visages (image,coef_pas,coef_taille,taille_min,pas_min,f,feature
 
 if __name__ == "__main__" :
     
+    taille = 24 # taille minimale des carrés balayés (24 x 24 pour la méthode de Viola-Jones)
+    pas = 2 # pas entre chaque sous-rectangles dans les carrés balayés
+    increment = 1.2 # ce par quoi on multiplie itérativement la taille des sous-rectangles
+    features = retrouver_features(taille,pas,increment) # toutes les features avec ces paramètres
+    
+    taille_min = 40 # la taille minimale des carrés balayés
+    coef_taille = 1.2 # ce par quoi on augmente la taille des carrés balayés itérativement
+    pas_min = 2 # le pas minimal lors du balayage des carrés
+    coef_pas = 1 # ce par quoi on augmente le pas lorsqu'on augmente la taille des carrés balayés
+    
+    image = import_image ("chemin") # l'image sur laquelle on veut détecter des visages, chemin à compléter
+    image = noir_et_blanc (image)
+    
     # Reconnaissance de visage avec une cascade
     fonction_cascade =  np.load("cascade.npy")
     n = len(fonction_cascade)
     f = [fonction_cascade[i][0] for i in range(n)] # la fonction de détection
     conditions = [fonction_cascade[i][1] for i in range(n)] # les conditions pour chaque classifieur fort
 
-    taille_min = 40 # la taille minimale des carrés balayés
-    coef_taille = 1.2 # ce par quoi on augmente la taille des carrés balayés itérativement
-    pas_min = 2 # le pas minimal lors du balayage des carrés
-    coef_pas = 1 # ce par quoi on augmente le pas lorsqu'on augmente la taille des carrés balayés
-
-    image = import_image ("chemin") # l'image sur laquelle on veut détecter des visages, chemin à compléter
-    image = noir_et_blanc (image)
-
     t1 = time()
     visages = reconnaitre_visages (image,coef_pas,coef_taille,taille_min,pas_min,f,features,True,conditions)
     print(time()-t1)
 
-    t1 = time()
     boites_a_tracer (image,visages)
+    
+    
+    f = np.load("fonction_detection.npy") # la fonction de détection monolithique
+    condition = # à compléter
+    
+    t1 = time()
+    visages = reconnaitre_visages (image,coef_pas,coef_taille,taille_min,pas_min,f,features,False,condition)
     print(time()-t1)
+
+    boites_a_tracer (image,visages)
