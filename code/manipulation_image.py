@@ -137,12 +137,12 @@ if __name__ == "__main__" :
     image = import_image("chemin") # chemin à compléter
     affiche (image,False)
     image_nb = noir_et_blanc(image)
-    affiche(image)
+    affiche(image_nb)
 
-    carres = subdivision (image_nb,300,100)
+    carres = subdivision (image_nb,_,_) # à compléter
     for carre,_,_ in carres[:5] : affiche(carre)
 
-    liste_boites = []
+    liste_boites = [] # à compléter
     boites_a_tracer (image_nb,liste_boites)
 
     t = np.arange(1,577).reshape((24,24))
