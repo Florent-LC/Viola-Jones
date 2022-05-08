@@ -92,8 +92,9 @@ def construction_cascade(f,d,F_target,P,N,test_visage,test_non_visage) :
         classifieur_fort = []
 
 
-        while F[i] > f*F[i-1] :       
+        while F[i] > f*F[i-1] :
             n += 1
+            fonction_cascade.append(0)
             # dans la suite du code, on applique l'algorithme d'Adaboost (on est obligé de le réécrire car on ne sait pas à l'avance le nombre
             # de classifieurs faibles dans le classifieur fort de la cascade)
 
@@ -176,7 +177,6 @@ def construction_cascade(f,d,F_target,P,N,test_visage,test_non_visage) :
             while D[i] < d*D[i-1] :
 
                 condition = conditions[j]
-                #print("condition : ",condition,"\n")
 
                 # en diminuant la condition, les visages déjà reconnus le seront toujours, on peut donc gagner du temps d'exécution en ne
                 # les testant pas pour le calcul de D à la prochaine boucle
@@ -194,24 +194,21 @@ def construction_cascade(f,d,F_target,P,N,test_visage,test_non_visage) :
                 verification_visage = verification_visage[a_conserver] # on enlève les images déjà bien reconnues
 
                 j += 1
-                #print("D[i] : ",D[i],"\n")
             
             # une fois que le taux de détection est valide, on peut déterminer le taux de faux positifs
 
+            fonction_cascade[-1] = ([classifieur_fort,condition])
+            n = len(fonction_cascade)
+            fonction = [fonction_cascade[i][0] for i in range(n)] # la fonction de détection
+            conditions = [fonction_cascade[i][1] for i in range(n)] # les conditions pour chaque classifieur fort
             non_visages_incorrects = 0
 
             for non_visage in test_non_visage :
-                if monolithique (non_visage,classifieur_fort,features,condition) :  # classification incorrecte
+                if cascade (non_visage,fonction,features,conditions) :  # classification incorrecte
                     non_visages_incorrects += 1
 
             F[i] = non_visages_incorrects / longueur_test_non_visage
 
-            print("F,D,condition : ",F,D,condition,"\n\n")
-
-        fonction_cascade.append([classifieur_fort,condition])
-        n = len(fonction_cascade)
-        fonction = [fonction_cascade[i][0] for i in range(n)] # la fonction de détection
-        conditions = [fonction_cascade[i][1] for i in range(n)] # les conditions pour chaque classifieur fort
 
         if F[i] > F_target :
             a_conserver = np.zeros(len(N),dtype=bool)
@@ -220,8 +217,6 @@ def construction_cascade(f,d,F_target,P,N,test_visage,test_non_visage) :
                 a_conserver[k] = cascade (non_visage,fonction,features,conditions) # classification incorrecte
 
             N = N[a_conserver]
-
-        print("classifieur_fort,condition,np.shape(N) : ",classifieur_fort,condition,np.shape(N),"\n")
 
     return fonction_cascade
 
